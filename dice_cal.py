@@ -17,9 +17,16 @@ preds = np.load(preds_path)
 labs_path = "path_to_labs.npy"
 labs = np.load(labs_path)
 
+# Ensure the predicted mask and ground truth mask have integer data type
+preds = preds.astype(int)
+labs = labs.astype(int)
+
 # Set non-zero values to 1
 preds[preds != 0] = 1
 labs[labs != 0] = 1
+
+# Ensure the predicted mask and ground truth mask have the same shape
+assert preds.shape == labs.shape, "Predicted mask and ground truth mask shape mismatch"
 
 # Calculate Dice coefficient
 dice = cal_dice(preds, labs)
